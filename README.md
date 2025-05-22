@@ -39,9 +39,11 @@ cd expense-tracker
 
 1. install packages
     pip install -r requirements.txt
+   
 2.run Backend
     cd backend
     python app.py
+    
 3.run frontend
     cd frontend
     streamlit run app.py
