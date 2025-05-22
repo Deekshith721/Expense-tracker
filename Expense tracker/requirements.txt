@@ -1,5 +1,0 @@
-Flask
-streamlit
-requests
-flask-cors
-pandas
