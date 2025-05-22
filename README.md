@@ -33,7 +33,6 @@ A full-stack Expense Tracker web app with a Flask backend and Streamlit frontend
 
 ### 1. Clone the repository
 
-```bash
 git clone https://github.com/yourusername/expense-tracker.git
 cd expense-tracker
 
@@ -46,3 +45,9 @@ cd expense-tracker
 3.run frontend
     cd frontend
     streamlit run app.py
+
+   in ui
+   click on register to create an account
+   later login to ur account
+
+   again manually click on the dashboard manually to get into application
