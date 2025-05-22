@@ -24,9 +24,21 @@ def add():
     data = request.json
     return add_expense(data)
 
+@app.route("/update_expense", methods=["PUT"])
+def update():
+    data = request.json
+    return update_expense(data)
+
+
 @app.route("/expenses/<username>")
-def list_expenses(username):
-    return get_expenses(username)
+def get_expenses(username):
+    conn = sqlite3.connect('expenses.db')
+    c = conn.cursor()
+    c.execute("SELECT id, username, date, category, type, amount, description FROM expenses WHERE username=?", (username,))
+    rows = c.fetchall()
+    conn.close()
+    return jsonify(rows)  # ✅ Must be jsonify
+
 
 @app.route("/delete_expense/<int:id>", methods=["DELETE"])
 def delete(id):

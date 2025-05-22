@@ -33,3 +33,13 @@ A full-stack Expense Tracker web app with a Flask backend and Streamlit frontend
 ```bash
 git clone https://github.com/yourusername/expense-tracker.git
 cd expense-tracker
+
+
+1. install packages
+    pip install -r requirements.txt
+2.run Backend
+    cd backend
+    python app.py
+3.run frontend
+    cd frontend
+    streamlit run app.py

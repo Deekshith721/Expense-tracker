@@ -34,31 +34,62 @@ def dashboard():
     # Add Expense
     st.subheader("Add Expense")
     date = st.date_input("Date")
+    type_ = st.radio("Transaction Type", ["Debit", "Credit"])
     category = st.selectbox("Category", ["Food", "Transport", "Rent", "Utilities", "Other"])
     amount = st.number_input("Amount", step=0.01)
     description = st.text_input("Description")
     if st.button("Add Expense"):
         data = {
-            "username": st.session_state.username,
-            "date": str(date),
-            "category": category,
-            "amount": amount,
-            "description": description
-        }
+        "username": st.session_state.username,
+        "date": str(date),
+        "category": category,
+        "type": type_,
+        "amount": amount,
+        "description": description
+    }
+
         res = requests.post(f"{API}/add_expense", json=data)
         st.success("Expense Added")
+
+    
+    st.subheader("Edit Transaction")
+    edit_id = st.number_input("Transaction ID to Edit", step=1)
+
+    with st.form("edit_form"):
+        new_date = st.date_input("New Date")
+        new_category = st.selectbox("New Category", ["Food", "Transport", "Rent", "Utilities", "Other"])
+        new_type = st.radio("New Type", ["Debit", "Credit"])
+        new_amount = st.number_input("New Amount", step=0.01)
+        new_desc = st.text_input("New Description")
+        submit_edit = st.form_submit_button("Update")
+
+    if submit_edit:
+        edit_data = {
+            "id": int(edit_id),
+            "username": st.session_state.username,
+            "date": str(new_date),
+            "category": new_category,
+            "type": new_type,
+            "amount": new_amount,
+            "description": new_desc
+        }
+        res = requests.put(f"{API}/update_expense", json=edit_data)
+        st.success("Transaction Updated!")
+        # Delete
+        del_id = st.number_input("Delete Expense ID", step=1)
+        if st.button("Delete"):
+            requests.delete(f"{API}/delete_expense/{int(del_id)}")
+            st.success("Deleted")
+        
 
     # View Expenses
     st.subheader("Your Expenses")
     res = requests.get(f"{API}/expenses/{st.session_state.username}")
-    df = pd.DataFrame(res.json(), columns=["ID", "Username", "Date", "Category", "Amount", "Description"])
+    st.write("Status code:", res.status_code)
+    st.write("Raw response text:", res.text)
+    df = pd.DataFrame(res.json(), columns=["ID", "Username", "Date", "Category", "Type", "Amount", "Description"])
     st.dataframe(df)
 
-    # Delete
-    del_id = st.number_input("Delete Expense ID", step=1)
-    if st.button("Delete"):
-        requests.delete(f"{API}/delete_expense/{int(del_id)}")
-        st.success("Deleted")
 
     # Summary
     st.subheader("Summary")
